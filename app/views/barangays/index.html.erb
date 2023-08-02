@@ -11,8 +11,8 @@
           </div>
           <div class="col-12 mt-5">
             <ul class="nav flex-column">
-              <li class="nav-item fw-bold border-bottom border-secondary">
-                Angelo Endonela
+              <li class="nav-item fw-bold border-bottom border-secondary text-center">
+                <small class="fw-normal"><%= current_user.email %></small>
               </li>
               <li class="nav-item mt-3">
                 <div class="list-group">
@@ -47,7 +47,15 @@
             </ul>  
             <div class="container mt-5">
               <div class="float-sm-start">
-                <%= image_tag('log-in.svg') %> Login
+                <nav>
+                  <% if user_signed_in? %>
+                    <div class="d-grid gap-2">
+                      <%= link_to destroy_user_session_path, method: :delete, class:"btn btn-primary btn-sm btn-secondary" do %>
+                        <%= image_tag('log-in.svg') %> Logout
+                      <% end %>
+                    </div>
+                  <% end %>
+                </nav>
               </div>
             </div>
           </div>

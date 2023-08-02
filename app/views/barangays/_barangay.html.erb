@@ -1,0 +1,39 @@
+<div id="<%= dom_id barangay %>">
+  <table class="table bg-transparent table-sm rounded table-sm table-hover rounded-pill" style="font-size:10px;">
+    <tbody>
+      <tr>
+          <th scope="row">
+            <div class="mt-2 text-center" style="color:#6c757d; font-size:10px;">
+              <%= image_tag('user (1).svg') %>
+              <br />
+              <%= barangay.gender%>
+            </div>
+          </th>
+          <td>
+              <div class="col-12 fs-6 text"><%= barangay.fullname %></div>
+              <div class="col-12">
+                <div class="badge text-start text-wrap fw-normal" style="width: 15rem;color:#6c757d; font-size:10px;">
+                  <%= barangay.address %>
+                </div>
+              </div>
+            
+          </td>
+          <td class="text text-start" style="font-size:15px;">
+            <%= link_to barangay, class: "text-decoration-none" do %>
+              <div class="mt-2">
+                <%= image_tag('message-square (1).svg') %> <%= barangay.number %>
+              </div>
+            <% end %>
+          </td>
+          <td class="fs-5"><%= 
+            if barangay.status == 1
+              @puts = 'check-circle.svg'
+            else
+              @puts = "slash.svg"
+            end
+            image_tag(@puts)
+          %></td>
+        </tr>
+    </tbody>
+  </table>
+</div>

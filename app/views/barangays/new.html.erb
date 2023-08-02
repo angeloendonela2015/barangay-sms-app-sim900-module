@@ -1,0 +1,81 @@
+<div class="container-sm mt-4 shadow rounded-2" style="background-color:#51308d; color:#ffffff; height:39rem">
+  <div class="container p-3">
+    <div class="row">
+      
+      <div class="col-3 border-2 border-end border-secondary" style="height:37rem;">
+        <div class="row">
+          <div class="col-12">
+            <%= link_to root_path do %>
+              <img src="/assets/barangay-low-resolution-logo-white-on-transparent-background.png" width="50%" class="rounded mx-auto d-block" alt="barangay logo">
+            <% end %>
+          </div>
+          <div class="col-12 mt-5">
+            <ul class="nav flex-column">
+              <li class="nav-item fw-bold border-bottom border-secondary">
+                Angelo Endonela
+              </li>
+              <li class="nav-item mt-3">
+                <div class="list-group">
+                  <%= link_to barangays_path, title:"Contact list", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
+                    <%= image_tag('book.svg') %> <span class="ms-3">Contact list</span>
+                  <% end %>
+                  <%= link_to new_barangay_path, title:"Create new contact", class:"list-group-item list-group-item-action active-2 sidemenu" do %>
+                    <%= image_tag('user-plus.svg') %> <span class="ms-3">Add new contact</span>
+                  <% end %>
+                  <%= link_to chats_path, title:"Messages", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
+                    <%= image_tag('mail.svg') %> <span class="ms-3">Messages</span>
+                    <span class="badge bg-cutsom rounded-pill float-end"><%= @inbox %></span>
+                  <% end %>
+                  <%= link_to new_chat_path, title:"New Message", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
+                    <%= image_tag('edit-3.svg') %> <span class="ms-3">New message</span>
+                  <% end %>
+                </div>
+              </li>
+              <li class="nav-item mt-3">
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
+                    Male <span class="badge bg-cutsom rounded-pill"><%= @male %></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
+                    Female <span class="badge bg-cutsom rounded-pill"><%= @female %></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
+                    Total <span class="badge bg-cutsom rounded-pill"><%= @total %></span>
+                  </li>
+                </ul>
+              </li>
+            </ul>  
+            <div class="container mt-5">
+              <div class="float-sm-start">
+                <%= image_tag('log-in.svg') %> Login
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-9 pb-3">
+        <h1>Add New List</h1>
+          <p style="color: green"><%= notice %></p>
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-4">
+                  <%= link_to barangays_path, title:"Back to the list", class:"shadow btn btn-outline-secondary btn-sm" do %>
+                    <%= image_tag('arrow-left.svg') %>
+                  <% end %>
+                </div>
+                <div class="col-8">
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="first_barangays" class="text-decoration-none">
+                <%= render "form", barangay: @barangay %>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

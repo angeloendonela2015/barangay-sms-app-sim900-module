@@ -1,0 +1,151 @@
+<div class="container-sm mt-4 shadow rounded-2" style="background-color:#51308d; color:#ffffff; height:39rem">
+  <div class="container p-3">
+    <div class="row">
+      
+      <div class="col-3 border-2 border-end border-secondary" style="height:37rem;">
+        <div class="row">
+          <div class="col-12">
+            <%= link_to root_path do %>
+              <img src="/assets/barangay-low-resolution-logo-white-on-transparent-background.png" width="50%" class="rounded mx-auto d-block" alt="barangay logo">
+            <% end %>
+          </div>
+          <div class="col-12 mt-5">
+            <ul class="nav flex-column">
+              <li class="nav-item fw-bold border-bottom border-secondary">
+                Angelo Endonela
+              </li>
+              <li class="nav-item mt-3">
+                <div class="list-group">
+                  <%= link_to barangays_path, title:"Contact list", class:"list-group-item list-group-item-action active-2 sidemenu" do %>
+                    <%= image_tag('book.svg') %> <span class="ms-3">Contact list</span>
+                  <% end %>
+                  <%= link_to new_barangay_path, title:"Create new contact", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
+                    <%= image_tag('user-plus.svg') %> <span class="ms-3">Add new contact</span>
+                  <% end %>
+                  <%= link_to chats_path, title:"Messages", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
+                    <%= image_tag('mail.svg') %> <span class="ms-3">Messages</span>
+                    <span class="badge bg-cutsom rounded-pill float-end"><%= @inbox %></span>
+                  <% end %>
+                  <%= link_to new_chat_path, title:"New Message", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
+                    <%= image_tag('edit-3.svg') %> <span class="ms-3">New message</span>
+                  <% end %>
+                </div>
+              </li>
+              <li class="nav-item mt-3">
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
+                    Male <span class="badge bg-cutsom rounded-pill"><%= @male %></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
+                    Female <span class="badge bg-cutsom rounded-pill"><%= @female %></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
+                    Total <span class="badge bg-cutsom rounded-pill"><%= @total %></span>
+                  </li>
+                </ul>
+              </li>
+            </ul>  
+            <div class="container mt-5">
+              <div class="float-sm-start">
+                <%= image_tag('log-in.svg') %> Login
+              </div>
+            </div>
+          </div>
+        </div>
+   
+      </div>
+
+      <div class="col-9 pb-3">
+        <h1>First barangays</h1>
+          <p style="color: green"><%= notice %></p>
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-6">
+                  <%= link_to barangays_path, title:"Back to the list", class:"shadow btn btn-outline-secondary btn-sm" do %>
+                    <%= image_tag('arrow-left.svg') %>
+                  <% end %>
+                  <%= link_to edit_barangay_path(@barangay) , title:"Edit", class:"shadow btn btn-outline-secondary btn-sm" do %>
+                    <%= image_tag('edit-2.svg') %> 
+                  <% end %>
+                </div>
+                <div class="col-6">
+                  <div class="dropdown d-md-flex justify-content-md-end">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li>
+                        <%= button_to @barangay, method: :delete, class:"btn btn-outline-light dropdown-item text-start", title:"Delete" do %>
+                          <%= image_tag('trash.svg') {:class=>""} %> <small>Remove</small>
+                        <%end%>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="first_barangays" class="text-decoration-none">
+                <%= render @barangay %>
+                <%= form_with(model: chat, method: :post) do |form| %>
+                  <div class="container">
+                    <div class="input-group mb-3 visually-hidden">
+                      <%= form.label :name_chat, class:"input-group-text", style: "display: block" do %><%= image_tag('user (1).svg') %><% end %>
+                      <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Name of person", value:@barangay.fullname %>
+                    </div>
+
+                    <div class="input-group mb-3 visually-hidden">
+                      <%= form.label :phone_number, class:"input-group-text", style: "display: block" do %><%= image_tag('phone (1).svg') %><% end %>
+                      <%= form.text_field :phone_number, class:"form-control text-capitalize", placeholder:"Number", value:@barangay.number %>
+                    </div>
+
+                    <div class="container mt-3">
+                      <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center">
+                          <%= form.text_area :body, class:"form-control textarea", id:"summary", maxlength:"200", placeholder:"Type Here...", onkeyup:"validate()" %>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                          <%= form.label :body, style: "display: block, font-size:10px;", class:"d-none mt-3 text-muted fst-italic", id:"words_count" do %>
+                            200 / <span id="textcount"></span>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="d-grid gap-2 col-4 mx-auto mt-3">
+                      <%= form.submit 'Send Message', class:"btn btn-primary btn-sm shadow", style:"background-color:#6f42c1;" %>
+                    </div>
+                  </div>
+                <% end %>
+
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function validate(){
+      const areatextarea = document.querySelector("#summary");
+      const areatext = document.querySelector("#summary").value.length;
+      const textcount = document.querySelector("#textcount");
+      const wordcount = document.querySelector("#words_count");
+      textcount.innerHTML = areatext;
+      
+      
+      if(areatext > 50){
+          textcount.classList.add("text-danger");
+          areatextarea.classList.add("textarea_danger");
+      }else{
+          textcount.classList.remove("text-danger");
+          areatextarea.classList.remove("textarea_danger");
+      }
+      
+      if(areatext < 1){
+          wordcount.classList.add("d-none");
+      }else{
+          wordcount.classList.remove("d-none");
+      }
+}
+</script>

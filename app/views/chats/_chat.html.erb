@@ -1,0 +1,17 @@
+<div id="<%= dom_id chat %>">
+    <div class="card text-dark bg-light mb-3" style="">
+      <div class="card-header">
+        <%= image_tag('phone (1).svg', class:"rounded-pill me-2") %>
+        <%= chat.phone_number %>
+        <div class="float-end">
+          <small><%= @count %></small>
+        </div>
+      </div>
+      <div class="card-body">
+        <h6 class="card-title text-muted"><%= image_tag('message-square (1).svg', class:"rounded-pill me-2") %>To: <%= chat.name_chat %></h6>
+        <div class="container">
+          <p class="card-text"><%= chat.body %></p>
+        </div>
+      </div>
+    </div>
+</div>

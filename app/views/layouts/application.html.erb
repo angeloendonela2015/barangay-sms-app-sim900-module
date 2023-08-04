@@ -8,9 +8,38 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
 
   <body>
     <%= yield %>
   </body>
+  <script>
+   $(document).ready(function() {
+    $('#myModal').modal('show');
+   });
+
+     function validate(){
+      const areatextarea = document.querySelector("#summary");
+      const areatext = document.querySelector("#summary").value.length;
+      const textcount = document.querySelector("#textcount");
+      const wordcount = document.querySelector("#words_count");
+      textcount.innerHTML = areatext;
+      
+      
+      if(areatext > 50){
+          textcount.classList.add("text-danger");
+          areatextarea.classList.add("textarea_danger");
+      }else{
+          textcount.classList.remove("text-danger");
+          areatextarea.classList.remove("textarea_danger");
+      }
+      
+      if(areatext < 1){
+          wordcount.classList.add("d-none");
+      }else{
+          wordcount.classList.remove("d-none");
+      }
+  }
+  </script>
 </html>

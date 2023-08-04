@@ -67,7 +67,7 @@ class ChatsController < ApplicationController
           phone_number = chat_params[:phone_number]
           message_body = chat_params[:body]
           # Initialize the Twilio client with your Twilio credentials.
-          client = Twilio::REST::Client.new('AC322ce592b8e5e272cac0c844d4f21355', 'a41a0150b439843e25d1824f8e264553')
+          client = Twilio::REST::Client.new('AC322ce592b8e5e272cac0c844d4f21355', '057d0b3ec798c81bf34fc05c2603977c')
           #client = Twilio::REST::Client.new(ENV['AC322ce592b8e5e272cac0c844d4f21355'], ENV['a41a0150b439843e25d1824f8e264553'])
           # Send the SMS message using the Twilio API.
           client.messages.create(from: '+19894742612', to: phone_number, body: message_body)

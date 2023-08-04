@@ -24,32 +24,36 @@
     </div>
 
     <div class="d-grid gap-2 col-4 mx-auto mt-3">
-      <%= form.submit 'Send Message', class:"btn btn-primary btn-sm shadow", style:"background-color:#6f42c1;" %>
+      <% if chat.errors.any? %>
+            <div id="myModal" class="modal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <small class="modal-title text-capitalize text-danger">
+                      <%= image_tag 'x-octagon.svg' %>
+                      <%= pluralize(chat.errors.count, "error") %> prohibited this SMS from being saved:
+                    </small>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="OK"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div style="color: red">
+                      <ul class="list-group p-3">
+                        <% chat.errors.each do |error| %>
+                          <li class="list-group-item">
+                            <%= image_tag 'alert-circle.svg', style:"margin-right:1rem;margin-left:5rem;" %>
+                            <small style="margin-left:1charem;"><%= error.full_message %></small>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <%= form.submit 'Send Message', class:"btn btn-primary btn-sm shadow", style:"background-color:red;" %>
+      <% else %>
+        <%= form.submit 'Send Message', class:"btn btn-primary btn-sm shadow", style:"background-color:#6f42c1;" %>
+      <% end %>
     </div>
   </div>
 <% end %>
-
-<script>
-  function validate(){
-      const areatextarea = document.querySelector("#summary");
-      const areatext = document.querySelector("#summary").value.length;
-      const textcount = document.querySelector("#textcount");
-      const wordcount = document.querySelector("#words_count");
-      textcount.innerHTML = areatext;
-      
-      
-      if(areatext > 50){
-          textcount.classList.add("text-danger");
-          areatextarea.classList.add("textarea_danger");
-      }else{
-          textcount.classList.remove("text-danger");
-          areatextarea.classList.remove("textarea_danger");
-      }
-      
-      if(areatext < 1){
-          wordcount.classList.add("d-none");
-      }else{
-          wordcount.classList.remove("d-none");
-      }
-}
-</script>

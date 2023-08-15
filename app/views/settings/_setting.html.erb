@@ -1,0 +1,51 @@
+<div id="<%= dom_id setting %>">
+  <h1 class="text-center mt-3 text-uppercase text-light" style="text-shadow: 2px 2px #646a6f96;"><%= current_user.email %></h1>
+  <%= link_to setting, class: "text-decoration-none" do %>
+    <div class="row">
+      <div class="col-6">
+        <h4 class="text-center text-center mt-3 text-light" style="text-shadow: 2px 2px #646a6f96;">Your Personal Information</h4>
+        <div class="input-group input-group-sm mb-3 d-none">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Userid:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.userid %>" disabled>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Firstname:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.firstname %>" disabled>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Middlename:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.middlename %>" disabled>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Lastname:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.lastname %>" disabled>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Phonenumber:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.phonenumber %>" disabled>
+        </div>
+      </div>
+      <div class="col-6">
+        <h4 class="text-center mt-3 text-light" style="text-shadow: 2px 2px #646a6f96;">Your Twilio</h4>
+        <div class="input-group input-group-sm mb-3">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Twiliophonenumber:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.twiliophonenumber %>" disabled>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Auth token:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.auth_token %>" disabled>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <strong class="input-group-text", id="inputGroup-sizing-sm">Account sid:</strong>
+          <input type="text" class="form-control text-uppercase" value="<%= setting.account_sid %>" disabled>
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>

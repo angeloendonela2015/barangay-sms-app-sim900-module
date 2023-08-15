@@ -4,3 +4,18 @@
         <%= link_to "Barangay 1",barangays_path, class:"btn btn-sm shadow-sm", style:"background-color:#6f42c1; color:#fff;" %>
     </div>
 </div>
+<% if notice %>
+  <div id="myModal" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <%= image_tag('check-circle (1).svg', class:"mx-auto d-block mt-3") %>
+          <p class="text-center text-success"><%= notice %></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<%end%>

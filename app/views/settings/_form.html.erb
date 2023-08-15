@@ -1,0 +1,83 @@
+<div class="container">
+  <%= form_with(model: setting) do |form| %>
+    <div class="d-grid gap-2 col-4 mx-auto mt-3">
+      <% if setting.errors.any? %>
+        <div id="myModal" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <small class="modal-title text-capitalize text-danger">
+                  <%= image_tag 'x-octagon.svg' %>
+                  <%= pluralize(setting.errors.count, "error") %> prohibited this setting from being saved:
+                </small>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="OK"></button>
+              </div>
+              <div class="modal-body">
+                <div style="color: red">
+                  <ul class="list-group p-3">
+                    <% setting.errors.each do |error| %>
+                      <li class="list-group-item">
+                        <%= image_tag 'alert-circle.svg', style:"margin-right:1rem;margin-left:5rem;" %>
+                        <small style="margin-left:1charem;"><%= error.full_message %></small>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="d-none input-group input-group-sm mb-3">
+      <%= form.number_field :userid, value: current_user.id, class:"form-control"%>
+    </div>
+
+    <h1 class="text-center mt-3 text-uppercase text-light" style="text-shadow: 2px 2px #646a6f96;"><%= current_user.email %></h1>
+
+    <div class="row mt-4">
+      <div class="col-6">
+          <h4 class="text-center text-center mt-3 text-light" style="text-shadow: 2px 2px #646a6f96;">Your Personal Information</h4>
+          <div class="input-group input-group-sm mb-3">
+            <%= form.label :firstname, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.text_field :firstname, class:"form-control" %>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <%= form.label :middlename, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.text_field :middlename, class:"form-control" %>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <%= form.label :lastname, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.text_field :lastname, class:"form-control" %>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <%= form.label :phonenumber, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.text_field :phonenumber, class:"form-control" %>
+          </div>
+      </div>
+      <div class="col-6">
+          <h4 class="text-center mt-3 text-light" style="text-shadow: 2px 2px #646a6f96;">Your Twilio</h4>
+          <div class="input-group input-group-sm mb-3">
+            <%= form.label 'Phone number', style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.text_field :twiliophonenumber, class:"form-control" %>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <%= form.label :auth_token, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.text_field :auth_token, class:"form-control" %>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <%= form.label :account_sid, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.text_field :account_sid, class:"form-control" %>
+          </div>
+      </div>
+    </div>
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <%= form.submit 'Update', class:"btn btn-primary btn-sm", style:"background-color:#6f42c1;color:#ffffff;" %>
+    </div>
+  <% end %>
+</div>

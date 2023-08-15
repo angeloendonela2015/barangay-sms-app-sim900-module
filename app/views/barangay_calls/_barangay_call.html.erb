@@ -1,0 +1,27 @@
+<div id="<%= dom_id barangay_call %>">
+  <table class="table bg-transparent table-sm rounded table-sm table-hover rounded-pill" style="font-size:10px;">
+    <tbody>
+      <tr>
+          <th scope="row" class="p-3">
+              <%= barangay_call.name_call %>
+            </div>
+          </th>
+          <td class="pt-3">
+            <%= barangay_call.phone_number %>
+          </td>
+          <td class="pt-3">
+            <%= barangay_call.created_at%>
+          </td>
+          <td class="pt-3">
+            <%= link_to barangay_call do %> 
+              <%= image_tag('phone-outgoing.svg', title:"Call")%>
+            <%end%>
+          </td>
+          <td class="pt-2">
+            <%= button_to 'Delete', barangay_call, method: :delete, class:"btn btn-primary btn-sm bg-danger", style:"font-size:10px;" %>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+

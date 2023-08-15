@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_02_015841) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_14_005257) do
+  create_table "barangay_calls", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name_call"
+    t.string "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "barangays", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "fullname"
     t.string "number"
@@ -25,6 +32,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_015841) do
     t.string "name_chat"
     t.string "phone_number"
     t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "settings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "userid"
+    t.string "firstname"
+    t.string "middlename"
+    t.string "lastname"
+    t.string "phonenumber"
+    t.string "twiliophonenumber"
+    t.string "auth_token"
+    t.string "account_sid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -6,61 +6,104 @@
         <div class="row">
           <div class="col-12">
             <%= link_to root_path do %>
-              <img src="/assets/barangay-low-resolution-logo-white-on-transparent-background.png" width="50%" class="rounded mx-auto d-block" alt="barangay logo">
+              <img src="/assets/barangay-low-resolution-logo-white-on-transparent-background.png" width="150rem" class="rounded mx-auto d-block img-fluid" alt="barangay logo">
             <% end %>
           </div>
           <div class="col-12 mt-5">
-            <ul class="nav flex-column">
-              <li class="nav-item fw-bold border-bottom border-secondary text-center">
-                <small class="fw-normal"><%= current_user.email %></small>
-              </li>
-              <li class="nav-item mt-3">
-                <div class="list-group">
-                  <%= link_to barangays_path, title:"Contact list", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
-                    <%= image_tag('book.svg') %> <span class="ms-3">Contact list</span>
-                  <% end %>
-                  <%= link_to new_barangay_path, title:"Create new contact", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
-                    <%= image_tag('user-plus.svg') %> <span class="ms-3">Add new contact</span>
-                  <% end %>
-                  <%= link_to chats_path, title:"Messages", class:"list-group-item list-group-item-action active-2 sidemenu" do %>
-                    <%= image_tag('mail.svg') %> <span class="ms-3">Messages</span>
-                    <span class="badge bg-cutsom rounded-pill float-end"><%= @inbox %></span>
-                  <% end %>
-                  <%= link_to new_chat_path, title:"New Message", class:"list-group-item list-group-item-action text-muted sidemenu" do %>
-                    <%= image_tag('edit-3.svg') %> <span class="ms-3">New message</span>
-                  <% end %>
-                </div>
-              </li>
-              <li class="nav-item mt-3">
-                <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
-                    Male <span class="badge bg-cutsom rounded-pill"><%= @male %></span>
+            <div class="text-center border-bottom mb-2">
+              <small>
+              <%= current_user.email %>
+              </small>
+            </div>
+            <div class=" myscroll" style="height:26rem;">
+              <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 250px;">
+                <ul class="nav nav-pills flex-column mb-auto">
+                  <li>
+                    <%= link_to barangays_path, title:"Contact list", class:"nav-link" do %>
+                      <%= image_tag('book.svg') %> Contact list
+                    <% end %>
                   </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
-                    Female <span class="badge bg-cutsom rounded-pill"><%= @female %></span>
+                  <li>
+                    <%= link_to new_barangay_path, title:"Create new contact", class:"nav-link" do %>
+                      <%= image_tag('user-plus.svg') %> Add new contact
+                    <% end %>
                   </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted">
-                    Total <span class="badge bg-cutsom rounded-pill"><%= @total %></span>
+                  <li>
+                    <%= link_to barangay_calls_path, title:"Call list", class:"nav-link" do %>
+                      <%= image_tag('phone-outgoing.svg') %> Calls
+                      <span class="badge bg-cutsom rounded-pill float-end"><%= @calls %></span>
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= link_to new_barangay_call_path, title:"Make a call", class:"nav-link" do %>
+                      <%= image_tag('phone-outgoing.svg') %> Make a call
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= link_to chats_path, title:"Messages", class:"nav-link active" do %>
+                      <%= image_tag('mail.svg') %> Messages
+                      <span class="badge bg-cutsom rounded-pill float-end"><%= @inbox %></span>
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= link_to new_chat_path, title:"New Message", class:"nav-link" do %>
+                      <%= image_tag('edit-3.svg') %> New message
+                    <% end %>
                   </li>
                 </ul>
-              </li>
-            </ul>  
-            <div class="container mt-5">
-              <div class="float-sm-start">
+              </div> 
+              <ul class="list-group mt-2">
+                <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted <%= @maledis %>">
+                      Male <span class="badge bg-cutsom rounded-pill"><%= @male %></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted <%= @femaledis %>">
+                      Female <span class="badge bg-cutsom rounded-pill"><%= @female %></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center sidemenu text-muted <%= @totaldis %>">
+                      Total <span class="badge bg-cutsom rounded-pill"><%= @total %></span>
+                    </li>
+              </ul>
+              <div class="mt-2">
                 <% if user_signed_in? %>
-                  <div class="d-grid gap-2">
+                  <div class="btn-group" style="width:100%;" role="group" aria-label="Button group with nested dropdown">
                     <%= link_to destroy_user_session_path, method: :delete, class:"btn btn-primary btn-sm btn-secondary" do %>
                       <%= image_tag('log-in.svg') %> Logout
                     <% end %>
+
+                    <div class="btn-group" role="group">
+                      <button id="btnGroupDrop1" type="button" class="btn btn-sm dropdown-toggle" style="background-color:#6f42c1;color:#ffffff;" data-bs-toggle="dropdown" aria-expanded="false">
+                        <%= image_tag('settings.svg') %>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="btnGroupDrop1">
+                        <li>
+                          <%= link_to settings_path, class:"dropdown-item text-center" do %>
+                            User Settings
+                          <% end %>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 <% end %>
               </div>
             </div>
           </div>
         </div>
-   
       </div>
-
+      <% if notice %>
+        <div id="myModal" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <%= image_tag('check-circle (1).svg', class:"mx-auto d-block mt-3") %>
+                <p class="text-center text-success"><%= notice %></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <%end%>
       <div class="col-9 pb-3">
         <h1>Resend message</h1>
           <div class="card">
@@ -85,11 +128,9 @@
                 </div>
               </div>
             </div>
-            
             <div class="card-body" style="background-color: #51308d;">
               <div id="chats" class="text-decoration-none">
                 <div class=" myscroll" style="height:26rem;">
-                  <p style="color: green"><%= notice %></p>
                   <%= render "form", chat: @chat %>
                 </div>
               </div>

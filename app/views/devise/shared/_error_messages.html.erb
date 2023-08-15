@@ -1,15 +1,27 @@
-<% if resource.errors.any? %>
-  <div id="error_explanation" data-turbo-cache="false">
-    <h2>
-      <%= I18n.t("errors.messages.not_saved",
-                 count: resource.errors.count,
-                 resource: resource.class.model_name.human.downcase)
-       %>
-    </h2>
-    <ul>
-      <% resource.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
+    <% if resource.errors.any? %>
+      <div id="myModal" class="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <small class="modal-title text-capitalize text-danger">
+                <%= image_tag 'x-octagon.svg' %>
+                <%= pluralize(resource.errors.count, "error") %> prohibited this resource from being saved:
+              </small>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="OK"></button>
+            </div>
+            <div class="modal-body">
+              <div style="color: red">
+                <ul class="list-group p-3">
+                  <% resource.errors.each do |error| %>
+                    <li class="list-group-item">
+                      <%= image_tag 'alert-circle.svg', style:"margin-right:1rem;margin-left:5rem;" %>
+                      <small style="margin-left:1charem;"><%= error.full_message %></small>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>

@@ -103,7 +103,6 @@ GEM
       activesupport (>= 5.0.0)
     jsbundling-rails (1.1.2)
       railties (>= 6.0.0)
-    jsontoerb (0.0.3)
     jwt (2.7.1)
     loofah (2.21.3)
       crass (~> 1.0.2)
@@ -233,7 +232,6 @@ DEPENDENCIES
   devise
   jbuilder
   jsbundling-rails
-  jsontoerb
   mysql2 (~> 0.5)
   puma (~> 5.0)
   rails (~> 7.0.6)

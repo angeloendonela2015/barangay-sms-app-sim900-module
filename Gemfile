@@ -65,7 +65,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem 'jsontoerb'
   gem 'devise'
   gem 'rspec-rails'
   gem 'twilio-ruby'

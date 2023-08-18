@@ -105,18 +105,57 @@
         </div>
       <%end%>
       <div class="col-9 pb-3">
-        <h1>First barangays</h1>
+        <h1>BARANGAY PEQUENA</h1>
           </p>
           <div class="card">
             <div class="card-header">
               <div class="row">
                 <div class="col-4">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="select_all" data-bs-target="#select_modal">
-                  <label class="form-check-label" style="font-size:12px;" for="flexCheckDefault">
-                    Message to all
-                  </label>
-                </div>
+                  <div class="form-check">
+                    <%= form_with(model: chat, method: :post) do |form| %>
+                      <%= check_box_tag :select_all, 1, false, class: 'select-all-checkbox', class:"form-check-input", id:"select_all" %>
+                      <label class="form-check-label" style="font-size:12px;" for="flexCheckDefault">
+                        Message to all
+                      </label>
+
+
+                      <div class="modal fade" id="select_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Message all barangays</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Recipient:<%= @total %></label>
+                                  <% @barangays.all.each do |allbrgy| %>
+                                    <div class="input-group input-group-sm mb-3 visually-hidden">
+                                      <%= check_box_tag 'allbrgy_ids[]', allbrgy.id %>
+                                      <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Name of person", value:allbrgy.fullname %>
+                                      <%= form.text_field :phone_number, class:"form-control text-capitalize", placeholder:"Number", value:allbrgy.number %>
+                                    </div>
+                                  <%end%>
+                              </div>
+                              <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Message:</label>
+                                <%= form.text_area :body, class:"form-control textarea", id:"summary", maxlength:"200", placeholder:"Type Here...", onkeyup:"validate()" %>
+                                <div class="d-flex justify-content-end">
+                                  <%= form.label :body, style: "display: block, font-size:10px;", class:"d-none mt-3 text-muted fst-italic", id:"words_count" do %>
+                                    200 / <span id="textcount"></span>
+                                  <% end %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary btn-sm" id="closeModal" data-bs-dismiss="modal">Close</button>
+                              <%= form.submit 'Send Message', class:"btn btn-sm shadow", style:"background-color:#6f42c1; color:#fff;; width:8rem;" %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <%end%>
+                  </div>
                 </div>
                 <div class="col-8">
                   <%= form_tag barangays_path, method: :get do %>
@@ -143,41 +182,6 @@
             </div>
           </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="select_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Message all barangays</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <%= form_with(model: chat, method: :post) do |form| %>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Recipient:<%= @total %></label>
-              <% @barangays.each do |allbrgy| %>
-                <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Name of person", value:allbrgy.fullname %>
-                <%= form.text_field :phone_number, class:"form-control text-capitalize", placeholder:"Number", value:allbrgy.number %>
-              <%end%>
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <%= form.text_area :body, class:"form-control textarea", id:"summary", maxlength:"200", placeholder:"Type Here...", onkeyup:"validate()" %>
-            <div class="d-flex justify-content-end">
-              <%= form.label :body, style: "display: block, font-size:10px;", class:"d-none mt-3 text-muted fst-italic", id:"words_count" do %>
-                200 / <span id="textcount"></span>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" id="closeModal" data-bs-dismiss="modal">Close</button>
-          <%= form.submit 'Send Message', class:"btn btn-sm shadow", style:"background-color:#6f42c1; color:#fff;; width:8rem;" %>
-        </div>
-      <%end%>
     </div>
   </div>
 </div>

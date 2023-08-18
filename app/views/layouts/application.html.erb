@@ -17,16 +17,14 @@
   <script>
   $(document).ready(function() {
     $('#myModal').modal('show');
+
+    $('#select_all').click(function() {
+      $('input[type="checkbox"]').prop('checked', this.checked);
+    });
   });
 
   $(document).on('click', '#closeModal', function() {
     $('input[type="checkbox"]').prop('checked', false);
-  });
-
-  $(document).ready(function() {
-    $('#select_all').click(function() {
-      $('input[type="checkbox"]').prop('checked', this.checked);
-    });
   });
 
   $('#select_all').click(function(){

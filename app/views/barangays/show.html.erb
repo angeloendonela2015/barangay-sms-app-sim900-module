@@ -137,7 +137,7 @@
                 <div class="container">
                 <%= form_with(model: chat, method: :post) do |form| %>
                   
-                    <div class="input-group mb-3 visually-hidden"">
+                    <div class="input-group mb-3 visually-hidden">
                       <%= form.label :name_chat, class:"input-group-text", style: "display: block" do %><%= image_tag('user (1).svg') %><% end %>
                       <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Name of person", value:@barangay.fullname %>
                     </div>

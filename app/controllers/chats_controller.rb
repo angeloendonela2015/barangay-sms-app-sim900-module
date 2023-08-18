@@ -191,43 +191,80 @@ class ChatsController < ApplicationController
         redirect_to new_setting_path
         flash[:notice] = "Please update your settings"
       else
-        @settings = Setting.where(userid: [current_user.id])
-        @settings.each do |setting|
-          @phonenumber = setting.phonenumber
-          @twiliophonenumber = setting.twiliophonenumber
-          @auth_token = setting.auth_token
-          @account_sid = setting.account_sid
+        if params[:allbrgy_ids].present?
+          @settings = Setting.where(userid: [current_user.id])
+          @settings.each do |setting|
+            @phonenumber = setting.phonenumber
+            @twiliophonenumber = setting.twiliophonenumber
+            @auth_token = setting.auth_token
+            @account_sid = setting.account_sid
 
-          @chat = Chat.new(chat_params)
-          respond_to do |format|
-            if @chat.save
-              phonenumber = @phonenumber
-              twiliophonenumber = @twiliophonenumber
-              auth_token = @auth_token 
-              account_sid = @account_sid
-              phone_number = chat_params[:phone_number]
-              message_body = "\n\n"
-              message_body += chat_params[:body]
-              message_body += "\n\n"
-              message_body += "Reply to this number:"
-              message_body += @phonenumber
+            @chat = Chat.new(chat_params)
+            respond_to do |format|
+              if @chat.save
+                phonenumber = @phonenumber
+                twiliophonenumber = @twiliophonenumber
+                auth_token = @auth_token 
+                account_sid = @account_sid
+                phone_number = chat_params[:phone_number]
+                message_body = "\n\n"
+                message_body += chat_params[:body]
+                message_body += "\n\n"
+                message_body += "Reply to this number:"
+                message_body += @phonenumber
 
-              # Initialize the Twilio client with your Twilio credentials.
-              client = Twilio::REST::Client.new(account_sid, auth_token)
-              #client = Twilio::REST::Client.new(ENV['AC322ce592b8e5e272cac0c844d4f21355'], ENV['a41a0150b439843e25d1824f8e264553'])
-              # Send the SMS message using the Twilio API.
-              client.messages.create(from: twiliophonenumber, to: phone_number, body: message_body)
-    
-              format.html { redirect_to chat_url(@chat), notice: "Your message was successfully sent." }
-              format.json { render :show, status: :created, location: @chat }
-            else
-              format.html { render :new, status: :unprocessable_entity }
-              format.json { render json: @chat.errors, status: :unprocessable_entity }
+                # Initialize the Twilio client with your Twilio credentials.
+                client = Twilio::REST::Client.new(account_sid, auth_token)
+                #client = Twilio::REST::Client.new(ENV['AC322ce592b8e5e272cac0c844d4f21355'], ENV['a41a0150b439843e25d1824f8e264553'])
+                # Send the SMS message using the Twilio API.
+                client.messages.create(from: twiliophonenumber, to: phone_number, body: message_body)
+      
+                format.html { redirect_to chat_url(@chat), notice: "Your all message was successfully sent." }
+                format.json { render :show, status: :created, location: @chat }
+              else
+                format.html { render :new, status: :unprocessable_entity }
+                format.json { render json: @chat.errors, status: :unprocessable_entity }
+              end
+      
             end
-    
           end
+        else
+          @settings = Setting.where(userid: [current_user.id])
+          @settings.each do |setting|
+            @phonenumber = setting.phonenumber
+            @twiliophonenumber = setting.twiliophonenumber
+            @auth_token = setting.auth_token
+            @account_sid = setting.account_sid
 
+            @chat = Chat.new(chat_params)
+            respond_to do |format|
+              if @chat.save
+                phonenumber = @phonenumber
+                twiliophonenumber = @twiliophonenumber
+                auth_token = @auth_token 
+                account_sid = @account_sid
+                phone_number = chat_params[:phone_number]
+                message_body = "\n\n"
+                message_body += chat_params[:body]
+                message_body += "\n\n"
+                message_body += "Reply to this number:"
+                message_body += @phonenumber
 
+                # Initialize the Twilio client with your Twilio credentials.
+                client = Twilio::REST::Client.new(account_sid, auth_token)
+                #client = Twilio::REST::Client.new(ENV['AC322ce592b8e5e272cac0c844d4f21355'], ENV['a41a0150b439843e25d1824f8e264553'])
+                # Send the SMS message using the Twilio API.
+                client.messages.create(from: twiliophonenumber, to: phone_number, body: message_body)
+      
+                format.html { redirect_to chat_url(@chat), notice: "Your message was successfully sent." }
+                format.json { render :show, status: :created, location: @chat }
+              else
+                format.html { render :new, status: :unprocessable_entity }
+                format.json { render json: @chat.errors, status: :unprocessable_entity }
+              end
+      
+            end
+          end
         end
       end
     else

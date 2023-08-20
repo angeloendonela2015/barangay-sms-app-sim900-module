@@ -111,14 +111,45 @@
             <div class="card-header">
               <div class="row">
                 <div class="col-4">
+                  
+                </div>
+                <div class="col-8">
+                  <%= form_tag barangays_path, method: :get do %>
+                    <div class="input-group input-group-sm">
+                      <%= text_field_tag :query, params[:query], placeholder: 'Search Names or Phone Numbers...', class:"form-control" %>
+                      <%= submit_tag '', class:'btn btn-outline-secondary' do %>
+                        <%= image_tag ('search (1).svg') %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-body">
+              <div id="first_barangays" class="text-decoration-none">
+                <div class=" myscroll" style="height:26rem;">
+                  <% @barangays.each do |barangay| %>
+                    <%= check_box_tag :select_all, 1, false, class: 'select-all-checkbox', class:"form-check-input", id:"select_all" %>
+                    <%= render barangay %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
                   <div class="form-check">
                     <%= form_with(model: chat, method: :post) do |form| %>
                       <%= check_box_tag :select_all, 1, false, class: 'select-all-checkbox', class:"form-check-input", id:"select_all" %>
                       <label class="form-check-label" style="font-size:12px;" for="flexCheckDefault">
-                        Message to all
+                        Select to message
                       </label>
-
-
                       <div class="modal fade" id="select_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
@@ -131,8 +162,8 @@
                                 <label for="recipient-name" class="col-form-label">Recipient:<%= @total %></label>
                                   <% @barangays.all.each do |allbrgy| %>
                                     <div class="input-group input-group-sm mb-3 visually-hidden">
-                                      <%= check_box_tag 'allbrgy_ids[]', allbrgy.id %>
-                                      <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Name of person", value:allbrgy.fullname %>
+                                      <%= check_box_tag 'allbrgy_ids[]', allbrgy.number %>
+                                      <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Fullname", value:allbrgy.fullname %>
                                       <%= form.text_field :phone_number, class:"form-control text-capitalize", placeholder:"Number", value:allbrgy.number %>
                                     </div>
                                   <%end%>
@@ -156,32 +187,3 @@
                       </div>
                     <%end%>
                   </div>
-                </div>
-                <div class="col-8">
-                  <%= form_tag barangays_path, method: :get do %>
-                    <div class="input-group input-group-sm">
-                      <%= text_field_tag :query, params[:query], placeholder: 'Search Names or Phone Numbers...', class:"form-control" %>
-                      <%= submit_tag '', class:'btn btn-outline-secondary' do %>
-                        <%= image_tag ('search (1).svg') %>
-                      <% end %>
-                    </div>
-                  <% end %>
-                  
-                </div>
-              </div>
-            </div>
-            
-            <div class="card-body">
-              <div id="first_barangays" class="text-decoration-none">
-                <div class=" myscroll" style="height:26rem;">
-                  <% @barangays.each do |barangay| %>
-                    <%= render barangay %>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>

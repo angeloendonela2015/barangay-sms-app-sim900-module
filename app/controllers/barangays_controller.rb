@@ -43,7 +43,7 @@ class BarangaysController < ApplicationController
       end
 
       if params[:query].present?
-        @barangays = Barangay.where('fullname LIKE ?', "%#{params[:query]}%")
+        @barangays = Barangay.where('fullname LIKE ? OR number LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%")
       else
         @barangays = Barangay.all
       end

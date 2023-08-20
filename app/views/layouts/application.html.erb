@@ -15,25 +15,25 @@
     <%= yield %>
   </body>
   <script>
-  $(document).ready(function() {
-    $('#myModal').modal('show');
+      $(document).ready(function() {
+        $('#myModal').modal('show');
 
-    $('#select_all').click(function() {
-      $('input[type="checkbox"]').prop('checked', this.checked);
-    });
-  });
+        $('#select_all').click(function() {
+          $('input[type="checkbox"]').prop('checked', this.checked);
+        });
+      });
 
-  $(document).on('click', '#closeModal', function() {
-    $('input[type="checkbox"]').prop('checked', false);
-  });
+      $(document).on('click', '#closeModal', function() {
+        $('input[type="checkbox"]').prop('checked', false);
+      });
 
-  $('#select_all').click(function(){
-    if($(this).is(':checked')) {
-      $('#select_modal').modal('show');
-    } else {
-      $('#select_modal').modal('hide');
-    }
-  });
+      $('#select_all').click(function(){
+        if($(this).is(':checked')) {
+          $('#select_modal').modal('show');
+        } else {
+          $('#select_modal').modal('hide');
+        }
+      });
 
      function validate(){
       const areatextarea = document.querySelector("#summary");

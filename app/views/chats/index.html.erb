@@ -29,17 +29,6 @@
                     <% end %>
                   </li>
                   <li>
-                    <%= link_to barangay_calls_path, title:"Call list", class:"nav-link" do %>
-                      <%= image_tag('phone-outgoing.svg') %> Calls
-                      <span class="badge bg-cutsom rounded-pill float-end"><%= @calls %></span>
-                    <% end %>
-                  </li>
-                  <li>
-                    <%= link_to new_barangay_call_path, title:"Make a call", class:"nav-link" do %>
-                      <%= image_tag('phone-outgoing.svg') %> Make a call
-                    <% end %>
-                  </li>
-                  <li>
                     <%= link_to chats_path, title:"Messages", class:"nav-link active" do %>
                       <%= image_tag('mail.svg') %> Messages
                       <span class="badge bg-cutsom rounded-pill float-end"><%= @inbox %></span>
@@ -109,12 +98,25 @@
           <div class="card">
             <div class="card-header">
               <div class="row">
-                <div class="col-4 d-grid gap-4 d-md-block">
-                  <%= link_to barangays_path, title:"Barangay list", class:"shadow shadow btn btn-outline-secondary btn-sm" do %>
-                    <%= image_tag('arrow-left.svg') %>
-                  <% end %>
-                </div>
                 <div class="col-8">
+                  <div class="row">
+                    <div class="col-3">
+                      <%= link_to barangays_path, title:"Barangay list", class:"shadow shadow btn btn btn-primary btn-sm" do %>
+                        <%= image_tag('arrow-left.svg') %>
+                      <% end %>
+                    </div>
+                    <div class="col-9">
+                      <%= paginate @chats %>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                    <%= search_form_for @q, remote: true do |f| %>
+                      <div class="input-group input-group-sm">
+                        <%= f.text_field :name_chat_cont, placeholder:"Search Names...", class:"form-control" %>
+                        <%= f.submit "Search", class:'btn btn-outline-secondary' %>
+                      </div>
+                    <% end %>
                 </div>
               </div>
             </div>
@@ -122,10 +124,14 @@
             <div class="card-body" style="background-color: #51308d;">
               <div id="chats" class="text-decoration-none">
                 <div class=" myscroll" style="height:26rem;">
-                  <% @chats.each do |chat| %>
-                    <%= link_to chat, class: "text-decoration-none" do%>
-                      <%= render chat %>
-                    <%end%>
+                  <% if @chats.any? %>
+                    <% @chats.each do |chat| %>
+                      <%= link_to chat, class: "text-decoration-none" do%>
+                        <%= render chat %>
+                      <%end%>
+                    <% end %>
+                  <% else %>
+                    <p>No results found.</p>
                   <% end %>
                 </div>
               </div>

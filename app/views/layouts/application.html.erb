@@ -14,7 +14,7 @@
   <body>
     <%= yield %>
   </body>
-  <script>
+  <script>    
       $(document).ready(function() {
         $('#myModal').modal('show');
 
@@ -28,7 +28,7 @@
       });
 
       $('#select_all').click(function(){
-        if($(this).is(':checked')) {
+        if($(this).is('#select_all')) {
           $('#select_modal').modal('show');
         } else {
           $('#select_modal').modal('hide');

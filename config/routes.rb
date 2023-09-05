@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
   resources :settings
-  resources :barangay_calls
   devise_for :users
   resources :barangays
   resources :chats
+  resources :chats do
+    post :create, on: :collection
+  end
   
   get 'login/index'
   get 'barangay_calls/make_call'

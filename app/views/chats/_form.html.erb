@@ -1,59 +1,76 @@
 <%= form_with(model: chat, method: :post) do |form| %>
   <div class="container">
-    <div class="input-group mb-3 ">
-      <%= form.label :name_chat, class:"input-group-text", style: "display: block" do %><%= image_tag('user (1).svg') %><% end %>
-      <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Name of person" %>        
-    </div>
 
-    <div class="input-group mb-3 ">
-      <%= form.label :phone_number, class:"input-group-text", style: "display: block" do %><%= image_tag('phone (1).svg') %><% end %>
-      <%= form.text_field :phone_number, class:"form-control text-capitalize", placeholder:"Number" %>
-    </div>
-
-    <div class="container mt-3">
-      <div class="row">
-        <div class="col-md-12 d-flex justify-content-center">
-          <%= form.text_area :body, class:"form-control textarea", id:"summary", maxlength:"200", placeholder:"Type Here...", onkeyup:"validate()" %>
+    <div class="row">
+      <div class="col-4">
+        <div class="form-check">
+          <%= check_box_tag :select_all, 1, nil, class:"form-check-input select-all-checkbox", id:"select_all" %>
+          <label class="form-check-label" style="font-size:12px;" for="flexCheckDefault">
+            Select all
+          </label>
         </div>
-        <div class="d-flex justify-content-end">
-          <%= form.label :body, style: "display: block, font-size:10px;", class:"d-none mt-3 text-muted fst-italic", id:"words_count" do %>
-            200 / <span id="textcount"></span>
-          <% end %>
+        <div class=" myscroll" style="height:22rem;">
+          <% @barangays.each do |barangay| %>
+            <ul class="list-group">
+              <li class="list-group-item mb-2 text-uppercase" style="font-size:10px;">
+                <%= check_box_tag "chat[phone_number]", barangay.number, nil, class:"form-check-input me-1" %>
+                  <%= barangay.fullname %>
+                  <div class="visually-hidden">
+                    <!--%= form.text_field :phone_number, class:"form-control text-capitalize", value:barangay.number %-->
+                    <%= form.text_field :name_chat, class:"form-control text-capitalize", value:barangay.fullname %>  
+                  </div>
+              </li>
+            </ul>
+          <%end%>
         </div>
       </div>
-    </div>
-
-    <div class="d-grid gap-2 col-4 mx-auto mt-3">
-      <% if chat.errors.any? %>
-            <div id="myModal" class="modal">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <small class="modal-title text-capitalize text-danger">
-                      <%= image_tag 'x-octagon.svg' %>
-                      <%= pluralize(chat.errors.count, "error") %> prohibited this SMS from being saved:
-                    </small>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="OK"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div style="color: red">
-                      <ul class="list-group p-3">
-                        <% chat.errors.each do |error| %>
-                          <li class="list-group-item">
-                            <%= image_tag 'alert-circle.svg', style:"margin-right:1rem;margin-left:5rem;" %>
-                            <small style="margin-left:1charem;"><%= error.full_message %></small>
-                          </li>
-                        <% end %>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div class="col-8">
+        <div class="container mt-3">
+          <div class="row">
+            <div class="col-md-12 d-flex justify-content-center">
+              <%= form.text_area :body, class:"form-control textarea", id:"summary", maxlength:"200", placeholder:"Type Here...", onkeyup:"validate()" %>
             </div>
-        <%= form.submit 'Send Message', class:"btn btn-primary btn-sm shadow", style:"background-color:red;" %>
-      <% else %>
-        <%= form.submit 'Send Message', class:"btn btn-primary btn-sm shadow", style:"background-color:#6f42c1;" %>
-      <% end %>
+            <div class="d-flex justify-content-end">
+              <%= form.label :body, style: "display: block, font-size:10px;", class:"d-none mt-3 text-muted fst-italic", id:"words_count" do %>
+                200 / <span id="textcount"></span>
+              <% end %>
+            </div>
+          </div>
+          
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                <% if chat.errors.any? %>
+                      <div id="myModal" class="modal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <small class="modal-title text-capitalize text-danger">
+                                <%= image_tag 'x-octagon.svg' %>
+                                <%= pluralize(chat.errors.count, "error") %> prohibited this SMS from being saved:
+                              </small>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="OK"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div style="color: red">
+                                <ul class="list-group p-3">
+                                  <% chat.errors.each do |error| %>
+                                    <li class="list-group-item">
+                                      <%= image_tag 'alert-circle.svg', style:"margin-right:1rem;margin-left:5rem;" %>
+                                      <small style="margin-left:1charem;"><%= error.full_message %></small>
+                                    </li>
+                                  <% end %>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  <%= form.submit 'Send Message', class:"btn btn-sm btn-primary me-md-2 shadow", style:"background-color:red;" %>
+                <% else %>
+                  <%= form.submit 'Send Message', class:"btn btn-sm btn-primary me-md-2 shadow", style:"background-color:#6f42c1;" %>
+                <% end %>
+              </div>
+        </div>            
+      </div>
     </div>
   </div>
 <% end %>

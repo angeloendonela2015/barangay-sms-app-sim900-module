@@ -29,17 +29,6 @@
                     <% end %>
                   </li>
                   <li>
-                    <%= link_to barangay_calls_path, title:"Call list", class:"nav-link" do %>
-                      <%= image_tag('phone-outgoing.svg') %> Calls
-                      <span class="badge bg-cutsom rounded-pill float-end"><%= @calls %></span>
-                    <% end %>
-                  </li>
-                  <li>
-                    <%= link_to new_barangay_call_path, title:"Make a call", class:"nav-link" do %>
-                      <%= image_tag('phone-outgoing.svg') %> Make a call
-                    <% end %>
-                  </li>
-                  <li>
                     <%= link_to chats_path, title:"Messages", class:"nav-link" do %>
                       <%= image_tag('mail.svg') %> Messages
                       <span class="badge bg-cutsom rounded-pill float-end"><%= @inbox %></span>
@@ -105,7 +94,7 @@
         </div>
       <%end%>
       <div class="col-9 pb-3">
-        <h1>First barangays</h1>
+        <h1>Barangay Pequeña</h1>
           <div class="card">
             <div class="card-header">
               <div class="row">

@@ -12,36 +12,18 @@
     <span class="input-group-text" id="basic-addon1"><%= image_tag('map-pin.svg') %></span>
     <%= form.text_field :address, class:"form-control text-capitalize", placeholder:"Address" %>
   </div>
-
+  
   <div class="row">
-    <div class="row-12">
-      <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Gender:</label>
-        <br />
-        <label class="form-check-label" for="inlineRadio1"></label>
-        <div class="form-check form-check-inline">
-          <%= form.number_field :gender, class:"form-check-input", id:"gender", type:"radio", value:"Male" %>
-          <label class="form-check-label" for="inlineRadio1">Male</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <%= form.number_field :gender, class:"form-check-input", id:"gender", type:"radio", value:"Female" %>
-          <label class="form-check-label" for="inlineRadio2">Female</label>
-        </div>
+    <div class="col-6">
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+        <%= form.select :gender, options_for_select([['Male','Male'],['Female','Female']]), {}, class:"form-select", id:"gender" %>
       </div>
     </div>
-    <div class="row-6">
-      <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Status:</label>
-        <br />
-        <label class="form-check-label" for="inlineRadio1"></label>
-        <div class="form-check form-check-inline">
-          <%= form.number_field :status, class:"form-check-input", id:"gender", type:"radio", value:"1" %>
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <%= form.number_field :status, class:"form-check-input", id:"gender", type:"radio", value:"0" %>
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
+    <div class="col-6">
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Status</label>
+        <%= form.select :status, options_for_select([['YES','1'],['NO','0']]), {}, class:"form-select", id:"status" %>
       </div>
     </div>
   </div>

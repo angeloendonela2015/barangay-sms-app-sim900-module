@@ -65,8 +65,13 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'ransack'
+  gem 'gsm_encoder'
+  gem 'serialport'
+  gem 'kaminari'
   gem 'devise'
   gem 'rspec-rails'
-  gem 'twilio-ruby'
+  #gem 'rest-client'
+  #gem 'json'
 end
 

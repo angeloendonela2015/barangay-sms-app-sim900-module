@@ -42,12 +42,6 @@ class SettingsController < ApplicationController
       else
         @inbox
       end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
-      end
     else
       redirect_to new_user_session_path
     end
@@ -86,12 +80,6 @@ class SettingsController < ApplicationController
         @inbox = ''
       else
         @inbox
-      end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
       end
     else
       redirect_to new_user_session_path
@@ -137,12 +125,6 @@ class SettingsController < ApplicationController
         @inbox = ''
       else
         @inbox
-      end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
       end
     else
       redirect_to new_user_session_path
@@ -190,12 +172,6 @@ class SettingsController < ApplicationController
         @inbox = ''
       else
         @inbox
-      end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
       end
     else
       redirect_to new_user_session_path

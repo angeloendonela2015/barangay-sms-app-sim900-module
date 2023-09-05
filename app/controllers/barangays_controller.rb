@@ -4,7 +4,6 @@ class BarangaysController < ApplicationController
   # GET /barangays or /barangays.json
   def index
     if user_signed_in?
-      @barangays = Barangay.all
       @male = Barangay.where(gender: 'male').count
       if @male == 0
         @male = ''
@@ -35,18 +34,10 @@ class BarangaysController < ApplicationController
       else
         @inbox
       end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
-      end
 
-      if params[:query].present?
-        @barangays = Barangay.where('fullname LIKE ? OR number LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%")
-      else
-        @barangays = Barangay.all
-      end
+      @q = Barangay.ransack(params[:q])
+      @barangays = @q.result(distinct: true).page(params[:page]).per(50)
+
     else
       redirect_to new_user_session_path
     end
@@ -98,12 +89,6 @@ class BarangaysController < ApplicationController
       else
         @inbox
       end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
-      end
     else
       redirect_to new_user_session_path
     end
@@ -143,12 +128,6 @@ class BarangaysController < ApplicationController
       else
         @inbox
       end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
-      end
     else
       redirect_to new_user_session_path
     end
@@ -157,43 +136,38 @@ class BarangaysController < ApplicationController
   # GET /barangays/1/edit
   def edit
     if user_signed_in?
+        @total = Barangay.count
+        @male = Barangay.where(gender: 'male').count
+      if @male == 0
+        @male = ''
+        @maledis = 'd-none'
+      else
+        @male
+        @maledis = 'd-block'
+      end
+      @female = Barangay.where(gender: 'female').count
+      if @female == 0
+        @female = ''
+        @femaledis = 'd-none'
+      else
+        @female 
+        @femaledis = 'd-block'
+      end
       @total = Barangay.count
-      @male = Barangay.where(gender: 'male').count
-    if @male == 0
-      @male = ''
-      @maledis = 'd-none'
-    else
-      @male
-      @maledis = 'd-block'
-    end
-    @female = Barangay.where(gender: 'female').count
-    if @female == 0
-      @female = ''
-      @femaledis = 'd-none'
-    else
-      @female 
-      @femaledis = 'd-block'
-    end
-    @total = Barangay.count
-    if @total == 0
-      @total = ''
-      @totaldis = 'd-none'
-    else
-      @total
-      @totaldis = 'd-block'
-    end
-    @inbox = Chat.count
-    if @inbox == 0
-      @inbox = ''
-    else
-      @inbox
-    end
-    @calls = BarangayCall.count
-    if @calls == 0
-      @calls = ''
-    else
-      @calls
-    end
+      if @total == 0
+        @total = ''
+        @totaldis = 'd-none'
+      else
+        @total
+        @totaldis = 'd-block'
+      end
+      @inbox = Chat.count
+      if @inbox == 0
+        @inbox = ''
+      else
+        @inbox
+      end
+
     else
       redirect_to new_user_session_path
     end
@@ -203,7 +177,6 @@ class BarangaysController < ApplicationController
   def create
     if user_signed_in?
       @barangay = Barangay.new(barangay_params)
-
       respond_to do |format|
         if @barangay.save
           format.html { redirect_to barangay_url(@barangay), notice: "Barangay list was successfully created." }

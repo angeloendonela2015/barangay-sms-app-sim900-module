@@ -13,6 +13,10 @@ require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
 require "devise"
+require 'kaminari'
+require 'serialport'
+require 'gsm_encoder'
+require 'ransack'
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems

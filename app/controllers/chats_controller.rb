@@ -6,7 +6,10 @@ class ChatsController < ApplicationController
     if user_signed_in?
       @barangays = Barangay.all
       @users = User.all
-      @chats = Chat.order(created_at: :desc)
+
+      @q = Chat.ransack(params[:q])
+      @chats = @q.result(distinct: true).page(params[:page]).per(50)
+
       @male = Barangay.where(gender: 'male').count
       if @male == 0
         @male = ''
@@ -36,12 +39,6 @@ class ChatsController < ApplicationController
         @inbox = ''
       else
         @inbox
-      end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
       end
     else
       redirect_to new_user_session_path
@@ -80,12 +77,6 @@ class ChatsController < ApplicationController
         @inbox = ''
       else
         @inbox
-      end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
       end
     else
       redirect_to new_user_session_path
@@ -127,12 +118,6 @@ class ChatsController < ApplicationController
       else
         @inbox
       end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
-      end
     else
       redirect_to new_user_session_path
     end
@@ -142,6 +127,7 @@ class ChatsController < ApplicationController
   def edit
     if user_signed_in?
       @barangay = Barangay.new
+      @barangays = Barangay.all
       @male = Barangay.where(gender: 'male').count
       if @male == 0
         @male = ''
@@ -172,12 +158,6 @@ class ChatsController < ApplicationController
       else
         @inbox
       end
-      @calls = BarangayCall.count
-      if @calls == 0
-        @calls = ''
-      else
-        @calls
-      end
     else
       redirect_to new_user_session_path
     end
@@ -186,90 +166,59 @@ class ChatsController < ApplicationController
   # POST /chats or /chats.json
   def create
     if user_signed_in?
+      @chat = Chat.new(chat_params)
+      @barangays = Barangay.all
       @settings = Setting.where(userid: [current_user.id])
-      if @settings.blank?
-        redirect_to new_setting_path
-        flash[:notice] = "Please update your settings"
-      else
-        if params[:allbrgy_ids].present?
-          @settings = Setting.where(userid: [current_user.id])
-          @settings.each do |setting|
-            @phonenumber = setting.phonenumber
-            @twiliophonenumber = setting.twiliophonenumber
-            @auth_token = setting.auth_token
-            @account_sid = setting.account_sid
 
-            @chat = Chat.new(chat_params)
-            respond_to do |format|
-              if @chat.save
-                phonenumber = @phonenumber
-                twiliophonenumber = @twiliophonenumber
-                auth_token = @auth_token 
-                account_sid = @account_sid
-                phone_number = chat_params[:phone_number]
-                message_body = "\n\n"
-                message_body += chat_params[:body]
-                message_body += "\n\n"
-                message_body += "Reply to this number:"
-                message_body += @phonenumber
+      @settings.each do |deviceSetting|
+        @devicePort = "/dev/#{deviceSetting.auth_token}"
+        @deviceBaud = 19200
+      end
 
-                # Initialize the Twilio client with your Twilio credentials.
-                client = Twilio::REST::Client.new(account_sid, auth_token)
-                #client = Twilio::REST::Client.new(ENV['AC322ce592b8e5e272cac0c844d4f21355'], ENV['a41a0150b439843e25d1824f8e264553'])
-                # Send the SMS message using the Twilio API.
-                client.messages.create(from: twiliophonenumber, to: phone_number, body: message_body)
-      
-                format.html { redirect_to chat_url(@chat), notice: "Your all message was successfully sent." }
-                format.json { render :show, status: :created, location: @chat }
-              else
-                format.html { render :new, status: :unprocessable_entity }
-                format.json { render json: @chat.errors, status: :unprocessable_entity }
-              end
-      
-            end
-          end
+      begin
+        
+        sp = SerialPort.new(@devicePort, @deviceBaud)
+        if @settings.blank?
+          redirect_to new_setting_path
+          flash[:notice] = "Please update your settings"
         else
-          @settings = Setting.where(userid: [current_user.id])
-          @settings.each do |setting|
-            @phonenumber = setting.phonenumber
-            @twiliophonenumber = setting.twiliophonenumber
-            @auth_token = setting.auth_token
-            @account_sid = setting.account_sid
+            
+          respond_to do |format|
+            if @chat.save
+              mobileNumber = chat_params[:phone_number]
+              messageContent = chat_params[:body]
 
-            @chat = Chat.new(chat_params)
-            respond_to do |format|
-              if @chat.save
-                phonenumber = @phonenumber
-                twiliophonenumber = @twiliophonenumber
-                auth_token = @auth_token 
-                account_sid = @account_sid
-                phone_number = chat_params[:phone_number]
-                message_body = "\n\n"
-                message_body += chat_params[:body]
-                message_body += "\n\n"
-                message_body += "Reply to this number:"
-                message_body += @phonenumber
+              # Serialport Connection
+              sp = SerialPort.new(@devicePort, @deviceBaud, 8, 1, SerialPort::NONE)
+              # Send commands to Arduino
+              commandAT = ("#{mobileNumber}, #{messageContent}\0x1A")
+              sleep(10)
+              sp.write("#{commandAT}\n")
+              sleep(10)
+              sp.write(26.chr)
+              sp.close
 
-                # Initialize the Twilio client with your Twilio credentials.
-                client = Twilio::REST::Client.new(account_sid, auth_token)
-                #client = Twilio::REST::Client.new(ENV['AC322ce592b8e5e272cac0c844d4f21355'], ENV['a41a0150b439843e25d1824f8e264553'])
-                # Send the SMS message using the Twilio API.
-                client.messages.create(from: twiliophonenumber, to: phone_number, body: message_body)
-      
-                format.html { redirect_to chat_url(@chat), notice: "Your message was successfully sent." }
-                format.json { render :show, status: :created, location: @chat }
-              else
-                format.html { render :new, status: :unprocessable_entity }
-                format.json { render json: @chat.errors, status: :unprocessable_entity }
-              end
-      
+              format.html { redirect_to chat_url(@chat), notice: "Your message was successfully sent." }
+              format.json { render :show, status: :created, location: @chat }
+            else
+              format.html { render :new, status: :unprocessable_entity }
+              format.json { render json: @chat.errors, status: :unprocessable_entity }
             end
+    
           end
         end
+      rescue Errno::ENOENT
+        flash[:notice] = "Device not found please check port connections!"
+        redirect_to root_path
+      rescue => e
+        flash[:notice] = "An error occured: #{e.message}"
+        redirect_to root_path
+      ensure
+        sp.close if sp && !sp.closed?
       end
     else
       redirect_to new_user_session_path
-    end
+    end   
   end
 
   # PATCH/PUT /chats/1 or /chats/1.json

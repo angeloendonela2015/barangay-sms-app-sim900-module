@@ -12,8 +12,17 @@
           <%= image_tag('check-circle (1).svg', class:"mx-auto d-block mt-3") %>
           <p class="text-center text-success"><%= notice %></p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+ <% elsif notice = "Device not found please check port connections!" %>
+   <div id="myModal" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <%= image_tag('alert-triangle (2).svg', class:"mx-auto d-block mt-3") %>
+          <p class="text-center text-danger"><%= notice %></p>
+          <p class="text-center">here <%= link_to 'Settings', settings_path %></p>
         </div>
       </div>
     </div>

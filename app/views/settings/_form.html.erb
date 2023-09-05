@@ -59,20 +59,36 @@
           </div>
       </div>
       <div class="col-6">
-          <h4 class="text-center mt-3 text-light" style="text-shadow: 2px 2px #646a6f96;">Your Twilio</h4>
-          <div class="input-group input-group-sm mb-3">
+          <h4 class="text-center mt-3 text-light" style="text-shadow: 2px 2px #646a6f96;">Your GSM module</h4>
+          <div class="input-group input-group-sm mb-3 visually-hidden">
             <%= form.label 'Phone Number', style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
             <%= form.text_field :twiliophonenumber, class:"form-control" %>
           </div>
 
           <div class="input-group input-group-sm mb-3">
-            <%= form.label :auth_token, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
-            <%= form.text_field :auth_token, class:"form-control" %>
+            <%= form.label "Device Port", style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.select :auth_token , options_for_select([['Port TTYACM0', 'ttyACM0'], 
+                                                              ['Port TTYACM1', 'ttyACM1'], 
+                                                              ['Port TTYACM2', 'ttyACM2'],
+                                                              ['Port TTYACM3', 'ttyACM3'],
+                                                              ['Port TTYACM4', 'ttyACM4'],
+                                                              ['Port TTYACM5', 'ttyACM5'], 
+                                                              ['Port COM0', 'COM0'], 
+                                                              ['Port COM1', 'COM1'], 
+                                                              ['Port COM2', 'COM2'], 
+                                                              ['Port COM3', 'COM3'], 
+                                                              ['Port COM4', 'COM4'], 
+                                                              ['Port COM5', 'COM5']]), {}, class:"form-select form-select-sm" %>
           </div>
 
-          <div class="input-group input-group-sm mb-3">
-            <%= form.label :account_sid, style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
-            <%= form.text_field :account_sid, class:"form-control" %>
+          <div class="input-group input-group-sm mb-3 visually-hidden">
+            <%= form.label "Device Baud", style: "display: block", class:"input-group-text", id:"inputGroup-sizing-sm" %>
+            <%= form.select :account_sid , options_for_select([['Baud Rate 300', '300'], 
+                                                              ['Baud Rate 1200', '1200'], 
+                                                              ['Baud Rate 2400', '2400'], 
+                                                              ['Baud Rate 2800', '2800'], 
+                                                              ['Baud Rate 9600', '9600'], 
+                                                              ['Baud Rate 19200', '19200']]), {}, class:"form-select form-select-sm" %>
           </div>
       </div>
     </div>

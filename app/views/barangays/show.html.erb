@@ -29,17 +29,6 @@
                     <% end %>
                   </li>
                   <li>
-                    <%= link_to barangay_calls_path, title:"Call list", class:"nav-link" do %>
-                      <%= image_tag('phone-outgoing.svg') %> Calls
-                      <span class="badge bg-cutsom rounded-pill float-end"><%= @calls %></span>
-                    <% end %>
-                  </li>
-                  <li>
-                    <%= link_to new_barangay_call_path, title:"Make a call", class:"nav-link" do %>
-                      <%= image_tag('phone-outgoing.svg') %> Make a call
-                    <% end %>
-                  </li>
-                  <li>
                     <%= link_to chats_path, title:"Messages", class:"nav-link" do %>
                       <%= image_tag('mail.svg') %> Messages
                       <span class="badge bg-cutsom rounded-pill float-end"><%= @inbox %></span>
@@ -105,7 +94,7 @@
         </div>
       <%end%>
       <div class="col-9 pb-3">
-        <h1>First barangays</h1>
+        <h1>Barangay Pequeña</h1>
           <div class="card">
             <div class="card-header">
               <div class="row">
@@ -134,43 +123,6 @@
             <div class="card-body">
               <div id="first_barangays" class="text-decoration-none">
                 <%= render @barangay %>
-                <div class="container">
-                <%= form_with(model: chat, method: :post) do |form| %>
-                  
-                    <div class="input-group mb-3 visually-hidden">
-                      <%= form.label :name_chat, class:"input-group-text", style: "display: block" do %><%= image_tag('user (1).svg') %><% end %>
-                      <%= form.text_field :name_chat, class:"form-control text-capitalize", placeholder:"Name of person", value:@barangay.fullname %>
-                    </div>
-
-                    <div class="input-group mb-3 visually-hidden">
-                      <%= form.label :phone_number, class:"input-group-text", style: "display: block" do %><%= image_tag('phone (1).svg') %><% end %>
-                      <%= form.text_field :phone_number, class:"form-control text-capitalize", placeholder:"Number", value:@barangay.number %>
-                    </div>
-
-                    <div class="container mt-3">
-                      <div class="row">
-                        <div class="col-md-12 d-flex justify-content-center">
-                          <%= form.text_area :body, class:"form-control textarea", id:"summary", maxlength:"200", placeholder:"Type Here...", onkeyup:"validate()" %>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                          <%= form.label :body, style: "display: block, font-size:10px;", class:"d-none mt-3 text-muted fst-italic", id:"words_count" do %>
-                            200 / <span id="textcount"></span>
-                          <% end %>
-                        </div>
-                      </div>
-                    </div>
-                  
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                    <%= form.submit 'Send Message', class:"btn btn-sm shadow", style:"background-color:#6f42c1; color:#fff;; width:8rem;" %>
-                <% end %>
-                <%= form_with(model: barangay_call, method: :post) do |form| %>
-                  <%= form.submit 'Call', class:"btn btn-sm shadow", style:"background-color:#166115; color:#fff; width:8rem;" %>
-                  <div class="visually-hidden">
-                    <%= form.text_field :name_call,value:@barangay.fullname %>
-                    <%= form.text_field :phone_number,value:@barangay.number %>
-                  </div>
-                <%end%>
-                </div>
               </div>
               </div>
             </div>

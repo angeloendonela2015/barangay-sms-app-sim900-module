@@ -1,5 +1,10 @@
 class Chat < ApplicationRecord
+    has_many :name_chats, class_name: 'nameChat'
+    def self.ransackable_attributes(auth_object = nil)
+        ["name_chat"]
+    end
+    
     validates :name_chat, presence: true
-    validates :phone_number, presence: true, format: { with: /\A\+639\d{9}\z/, message: "must be a valid Philippine mobile number Ex: +639xxxxxxxxx" }
+    validates :phone_number, presence: true
     validates :body, presence: true
 end

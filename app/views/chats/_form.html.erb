@@ -1,4 +1,4 @@
-<%= form_with(model: chat, method: :post) do |form| %>
+<%= form_with(model: chat, method: :post, id:'chat,', remote: true ) do |form| %>
   <div class="container">
 
     <div class="row">
@@ -17,7 +17,7 @@
                   <%= barangay.fullname %>
                   <div class="visually-hidden">
                     <!--%= form.text_field :phone_number, class:"form-control text-capitalize", value:barangay.number %-->
-                    <%= form.text_field :name_chat, class:"form-control text-capitalize", value:barangay.fullname %>  
+                    <%= text_field_tag "chat[name_chat]", barangay.fullname , class:"form-control text-capitalize" %>  
                   </div>
               </li>
             </ul>

@@ -48,6 +48,7 @@ class ChatsController < ApplicationController
   # GET /chats/1 or /chats/1.json
   def show
     if user_signed_in?
+      @chats = Chat.find(params[:id])
       @male = Barangay.where(gender: 'male').count
       if @male == 0
         @male = ''
@@ -187,7 +188,7 @@ class ChatsController < ApplicationController
             if @chat.save
               mobileNumber = chat_params[:phone_number]
               messageContent = chat_params[:body]
-
+              
               # Serialport Connection
               sp = SerialPort.new(@devicePort, @deviceBaud, 8, 1, SerialPort::NONE)
               # Send commands to Arduino

@@ -4,6 +4,8 @@ class Barangay < ApplicationRecord
         ["fullname"]
     end
 
+    
+
     validates :number, presence: true, uniqueness: true, format: { with: /\A\+639\d{9}\z/, message: "must be a valid Philippine mobile number Ex: +639xxxxxxxxx" }
     validates :address, presence: true
     validates :gender, presence: true

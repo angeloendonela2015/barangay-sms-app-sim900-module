@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_14_005257) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_06_030536) do
   create_table "barangay_calls", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name_call"
     t.string "phone_number"
@@ -34,6 +34,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_005257) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "chats_numbers", id: false, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.bigint "number_id", null: false
   end
 
   create_table "settings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

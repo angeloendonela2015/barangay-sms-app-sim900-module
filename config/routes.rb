@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :settings
   devise_for :users
   resources :barangays
-  resources :chats
+  resources :chats, only: [:create]
   resources :chats do
     post :create, on: :collection
   end

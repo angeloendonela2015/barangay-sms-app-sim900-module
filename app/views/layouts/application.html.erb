@@ -15,6 +15,40 @@
     <%= yield %>
   </body>
   <script>    
+
+
+// app/assets/javascripts/your_models.js
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('chat');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const url = form.getAttribute('/chats');
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        // Handle success (e.g., show a success message, update the UI, etc.)
+        console.log('Record created successfully');
+        form.reset();
+      } else {
+        // Handle errors (e.g., display error messages)
+        console.error('Error creating record');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+  });
+});
+
+
+
+
       $(document).ready(function() {
         $('#myModal').modal('show');
 

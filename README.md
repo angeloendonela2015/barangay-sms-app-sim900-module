@@ -1,25 +1,10 @@
-# README
-
-About
-Rails-based barangay SMS notification system that texts registered voters campaign and election updates, via an Arduino Uno + SIM900 GSM module with Twilio as a fallback gateway.
-
 # Barangay SMS App (SIM900 Module)
 
-A Ruby on Rails application that sends SMS notifications to registered voters
-in a barangay for election campaign announcements, schedules, and reminders.
+A Ruby on Rails application that sends SMS notifications to registered voters in a barangay for election campaign announcements, schedules, and reminders. Messages go out through an Arduino Uno with a SIM900 GSM module (local, low-cost) or through Twilio (cloud).
 
-## Overview
+## Project Background
 
-The app manages a database of registered voters and lets barangay staff or
-campaign coordinators compose messages and send them to individuals, groups
-(e.g. by purok or precinct), or the full voter list. Messages are delivered
-through one of two gateways:
-
-- **Arduino Uno + SIM900 GSM module**: a local, low-cost gateway that sends
-  SMS through a physical SIM card. The Rails app talks to the Arduino over a
-  serial connection, which avoids per-message API costs and works where
-  internet access is limited.
-- **Twilio SMS API**: a cloud gateway used as a fallback or for higher volume.
+Built as a 3-month project for a barangay councilor to support election campaign communication with registered voters.
 
 ## Features
 
@@ -27,51 +12,116 @@ through one of two gateways:
 - Compose and send single, group, or bulk SMS
 - Selectable gateway: SIM900 (hardware) or Twilio (cloud)
 - Delivery status logging and message history
-- Opt-out handling for voters who no longer wish to receive messages
+- Opt-out handling
 
-## Tech Stack
+## Ruby version
 
-| Layer     | Technology                         |
-|-----------|------------------------------------|
-| Backend   | Ruby on Rails                      |
-| Hardware  | Arduino Uno, SIM900 GSM/GPRS shield|
-| Cloud SMS | Twilio Programmable Messaging      |
-| Database  | (MySQL)                            |
+`ruby-3.0.0` (see `.ruby-version`)
 
-## How It Works
+```bash
+rbenv install 3.0.0   # or: rvm install 3.0.0
+```
 
-1. Staff creates a message and selects recipients in the Rails UI.
-2. Rails queues the messages as background jobs.
-3. Each job dispatches via the chosen gateway:
-   - **SIM900:** AT commands (`AT+CMGF=1`, `AT+CMGS`) sent to the Arduino over serial
-   - **Twilio:** an authenticated REST call
-4. The delivery result is stored for each recipient.
+## System dependencies
 
-## Compliance Notice
+| Dependency | Purpose |
+|---|---|
+| Ruby 3.0.0 + Bundler | Rails runtime |
+| Node.js + Yarn | JavaScript assets (`package.json`, `yarn.lock`) |
+| SQL database (TODO: SQLite / PostgreSQL / MySQL) | Application data |
+| Arduino IDE (or `arduino-cli`) | Flash the Arduino Uno sketch |
+| Arduino Uno + SIM900 GSM shield | Local SMS gateway |
+| Active SIM card with SMS load | Used by the SIM900 |
+| External 5V power supply (about 2A) | SIM900 draws current spikes that USB alone cannot supply |
+| Twilio account (optional) | Cloud SMS gateway |
 
-Sending campaign messages to voters involves personal data. Make sure you
-have a lawful basis or consent, honor opt-outs, and follow the Data Privacy
-Act of 2012 (RA 10173) and applicable COMELEC campaign rules.
+## Configuration
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Install gems and JS packages:
 
-Things you may want to cover:
+```bash
+bundle install
+yarn install
+```
 
-* Ruby version
+Never commit credentials. Use Rails credentials or environment variables:
 
-* System dependencies
+| Variable | Description |
+|---|---|
+| `SMS_GATEWAY` | `sim900` or `twilio` |
+| `SERIAL_PORT` | Arduino serial port, e.g. `/dev/ttyUSB0` or `/dev/ttyACM0` (Linux), `COM3` (Windows) |
+| `SERIAL_BAUD_RATE` | Must match the Arduino sketch, e.g. `9600` |
+| `TWILIO_ACCOUNT_SID` | Twilio account SID |
+| `TWILIO_AUTH_TOKEN` | Twilio auth token |
+| `TWILIO_PHONE_NUMBER` | Twilio sender number |
 
-* Configuration
+On Linux, give your user access to the serial port:
 
-* Database creation
+```bash
+sudo usermod -aG dialout $USER   # log out and back in afterwards
+```
 
-* Database initialization
+### Arduino / SIM900 setup
 
-* How to run the test suite
+1. Mount the SIM900 shield on the Arduino Uno and insert the SIM card.
+2. Set the shield's serial jumpers (software serial vs. hardware serial) as your shield's datasheet describes, and match the pins in the sketch. (TODO: document your pins.)
+3. Power the shield from the external supply, then connect the Arduino to the server by USB.
+4. Flash the sketch from the Arduino IDE.
+5. The app sends standard SIM900 AT commands over serial: `AT+CMGF=1` (text mode), then `AT+CMGS="<number>"` followed by the message and Ctrl+Z (`0x1A`).
 
-* Services (job queues, cache servers, search engines, etc.)
+## Database creation
 
-* Deployment instructions
+```bash
+bin/rails db:create
+```
 
-* ...
+## Database initialization
+
+```bash
+bin/rails db:migrate
+bin/rails db:seed   # use sample data only, never real voter records
+```
+
+## How to run the test suite
+
+The `spec/` directory uses RSpec:
+
+```bash
+bundle exec rspec
+```
+
+Tests should mock both gateways (serial port and Twilio) so no real SMS is sent.
+
+## Services
+
+- **Background jobs (TODO: confirm adapter, e.g. Sidekiq/Solid Queue/Active Job async):** each SMS is queued as a job so the web request is not blocked and sends can be rate-limited and retried.
+- **Gateways:** SIM900 over serial, Twilio over HTTPS.
+- **Development:** `Procfile.dev` starts the app processes together:
+
+```bash
+bin/dev
+```
+
+Note: the SIM900 sends slowly and carriers may block a SIM that sends in bulk, so throttle bulk sends.
+
+## Deployment instructions
+
+1. Deploy to a server that the Arduino can be physically connected to if you use the SIM900 gateway. A cloud-only host can only use Twilio.
+2. Set the environment variables above on the server.
+3. Precompile assets and migrate:
+
+```bash
+RAILS_ENV=production bundle exec rails assets:precompile
+RAILS_ENV=production bundle exec rails db:migrate
+```
+
+4. Run the app server (e.g. Puma behind NGINX) and the background job worker as services (systemd or similar).
+5. Make sure the serial device path stays stable (a udev rule helps) and that the service user has serial port access.
+
+## Compliance notice
+
+Sending campaign messages to voters involves personal data. Obtain a lawful basis or consent, honor opt-outs, and follow the Data Privacy Act of 2012 (RA 10173) and applicable COMELEC campaign rules. Do not publish real voter data in this repository.
+
+## License
+
+See [LICENSE](LICENSE).
